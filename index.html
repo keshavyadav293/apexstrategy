@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Strategy | Global Consulting Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        .page { display: none; min-height: 80vh; }
+        .page.active { display: block; }
+        
+        /* Fixed Social Sidebar (Left) */
+        .social-sidebar {
+            position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px; z-index: 1000;
+            padding: 25px 12px; background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px); border-radius: 0 20px 20px 0;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+        }
+        .social-icon {
+            width: 45px; height: 45px; background: white; display: flex;
+            align-items: center; justify-content: center; border-radius: 50%;
+            color: #0f172a; font-size: 20px; transition: all 0.3s ease;
+        }
+        .social-icon.li:hover { background: #0077b5; color: white; transform: translateX(8px); }
+        .social-icon.tw:hover { background: #000000; color: white; transform: translateX(8px); }
+        .social-icon.fb:hover { background: #1877f2; color: white; transform: translateX(8px); }
+
+        /* Fixed Chatbot (Right) */
+        .chatbot-container { position: fixed; right: 20px; bottom: 30px; z-index: 1000; }
+        #chat-window {
+            display: none; position: absolute; bottom: 80px; right: 0;
+            width: 350px; background: white; border-radius: 15px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden;
+        }
+        .chat-btn {
+            width: 65px; height: 65px; background: #0284c7; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 26px; cursor: pointer; box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        .chat-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+
+    <div class="social-sidebar">
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" class="social-icon li" title="LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="https://twitter.com/yourhandle" target="_blank" class="social-icon tw" title="Twitter/X">
+            <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://facebook.com/yourpage" target="_blank" class="social-icon fb" title="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+    </div>
+
+    <div class="chatbot-container">
+        <div id="chat-window" class="border border-slate-200">
+            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="font-bold">Apex Strategy AI</span>
+                </div>
+                <button onclick="toggleChat()" class="text-2xl">&times;</button>
+            </div>
+            <div class="p-4 h-80 overflow-y-auto text-sm text-slate-600 bg-slate-50" id="chat-content">
+                <p class="bg-white border p-3 rounded-lg mb-4 shadow-sm">Hello! I'm the Apex Strategy assistant. How can I help you scale your business today?</p>
+            </div>
+            <div class="p-3 border-t bg-white flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask about our services..." class="w-full p-2 outline-none text-sm">
+                <button onclick="sendMessage()" class="bg-sky-600 text-white px-3 py-1 rounded text-xs font-bold">SEND</button>
+            </div>
+        </div>
+        <div class="chat-btn" onclick="toggleChat()"><i class="fa-solid fa-comment-dots"></i></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-slate-200 px-12 py-6 flex justify-between items-center">
+        <div class="text-2xl font-black tracking-tighter text-slate-900 cursor-pointer" onclick="showPage('home')">APEX<span class="text-sky-600">STRATEGY</span></div>
+        <div class="hidden md:flex space-x-10 font-bold text-xs uppercase tracking-widest text-slate-500">
+            <a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-sky-600 transition">Home</a>
+            <a href="javascript:void(0)" onclick="showPage('services')" class="hover:text-sky-600 transition">Services</a>
+            <a href="javascript:void(0)" onclick="showPage('cases')" class="hover:text-sky-600 transition">Case Studies</a>
+            <a href="javascript:void(0)" onclick="showPage('about')" class="hover:text-sky-600 transition">About</a>
+            <a href="javascript:void(0)" onclick="showPage('contact')" class="hover:text-sky-600 transition">Contact</a>
+        </div>
+        <button onclick="showPage('contact')" class="bg-sky-600 text-white px-8 py-3 rounded-md text-xs font-bold uppercase tracking-widest hover:bg-slate-900 transition shadow-lg shadow-sky-200">Book a Call</button>
+    </nav>
+
+    <div id="home" class="page active">
+        <header class="relative h-[90vh] flex items-center px-12 md:px-24 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1920&q=80" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/60 to-transparent"></div>
+            <div class="relative z-10 max-w-4xl text-white">
+                <h1 class="text-7xl md:text-9xl font-extrabold mb-8 leading-none">High Impact <br><span class="text-sky-400">Consulting.</span></h1>
+                <p class="text-xl md:text-2xl text-slate-300 mb-12 font-light leading-relaxed max-w-2xl">We bridge the gap between abstract strategy and real-world execution for global industry leaders.</p>
+                <button onclick="showPage('services')" class="bg-sky-600 px-12 py-6 font-bold text-sm uppercase tracking-widest hover:bg-white hover:text-sky-600 transition shadow-xl">Our Expertise</button>
+            </div>
+        </header>
+
+        <section class="py-12 bg-slate-100 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-12 flex flex-wrap justify-between items-center opacity-40 grayscale gap-8 font-bold text-xl tracking-widest uppercase">
+                <span>Fortune 500</span>
+                <span>Global Tech</span>
+                <span>Euro Bank</span>
+                <span>Pacific Corp</span>
+                <span>Indu-Group</span>
+            </div>
+        </section>
+
+        <section class="py-32 px-12 bg-white">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-16">
+                <div class="space-y-6">
+                    <div class="text-sky-600 text-5xl font-black italic">01</div>
+                    <h3 class="text-2xl font-black uppercase tracking-tight">Market Intelligence</h3>
+                    <p class="text-slate-500 leading-relaxed">Deep-dive data analytics that uncover hidden opportunities in emerging markets before your competitors see them.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="text-sky-600 text-5xl font-black italic">02</div>
+                    <h3 class="text-2xl font-black uppercase tracking-tight">Agile Operations</h3>
+                    <p class="text-slate-500 leading-relaxed">We restructure internal workflows to prioritize speed and efficiency, reducing operational waste by up to 35%.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="text-sky-600 text-5xl font-black italic">03</div>
+                    <h3 class="text-2xl font-black uppercase tracking-tight">Risk Mitigation</h3>
+                    <p class="text-slate-500 leading-relaxed">Global scaling requires safety. Our proprietary models protect your assets during aggressive market shifts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-12 bg-slate-50 overflow-hidden">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-20">
+                <div class="w-full md:w-1/2 relative">
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-sky-200 rounded-full blur-3xl opacity-30"></div>
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" class="rounded-3xl shadow-2xl relative z-10">
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-5xl font-black mb-8 leading-tight">Architecture of <br><span class="text-sky-600">Corporate Excellence.</span></h2>
+                    <p class="text-lg text-slate-600 mb-10 leading-relaxed">Since 2010, Apex has been the silent partner behind some of the world's most successful IPOs and turnarounds. We don't just provide slides; we provide the blueprint for dominance.</p>
+                    <div class="flex gap-10 border-t border-slate-200 pt-10">
+                        <div>
+                            <p class="text-3xl font-black text-slate-900">98%</p>
+                            <p class="text-xs uppercase font-bold text-slate-400 tracking-widest">Retention</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-slate-900">4.5x</p>
+                            <p class="text-xs uppercase font-bold text-slate-400 tracking-widest">Avg ROI</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-12 bg-white text-center">
+            <h2 class="text-5xl font-bold mb-16 italic">Global Impact at Scale</h2>
+            <div class="grid md:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                <div class="p-10 bg-slate-50 rounded-2xl"><h4 class="text-4xl font-black text-sky-600 mb-2">22+</h4><p class="text-slate-500 uppercase text-xs font-bold tracking-widest">Countries</p></div>
+                <div class="p-10 bg-slate-50 rounded-2xl"><h4 class="text-4xl font-black text-sky-600 mb-2">500+</h4><p class="text-slate-500 uppercase text-xs font-bold tracking-widest">Global Clients</p></div>
+                <div class="p-10 bg-slate-50 rounded-2xl"><h4 class="text-4xl font-black text-sky-600 mb-2">15yr</h4><p class="text-slate-500 uppercase text-xs font-bold tracking-widest">Experience</p></div>
+                <div class="p-10 bg-slate-50 rounded-2xl"><h4 class="text-4xl font-black text-sky-600 mb-2">$2B+</h4><p class="text-slate-500 uppercase text-xs font-bold tracking-widest">Value Created</p></div>
+            </div>
+        </section>
+    </div>
+
+    <div id="services" class="page py-32 px-12 text-center">
+        <h2 class="text-6xl font-black mb-8">Professional Services</h2>
+        <p class="text-xl text-slate-500 mb-20">Tailored solutions for modern corporate challenges.</p>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-2xl transition group text-left">
+                <div class="bg-sky-100 text-sky-600 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-sky-600 group-hover:text-white transition">
+                    <i class="fa-solid fa-chart-pie text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Capital Management</h3>
+                <p class="text-slate-500 text-sm">Optimizing financial structures to ensure long-term stability and high-yield returns.</p>
+            </div>
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-2xl transition group text-left">
+                <div class="bg-sky-100 text-sky-600 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-sky-600 group-hover:text-white transition">
+                    <i class="fa-solid fa-earth-americas text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Market Expansion</h3>
+                <p class="text-slate-500 text-sm">Strategic entry points for brands looking to dominate new geographical territories.</p>
+            </div>
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-2xl transition group text-left">
+                <div class="bg-sky-100 text-sky-600 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-sky-600 group-hover:text-white transition">
+                    <i class="fa-solid fa-microchip text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Tech Integration</h3>
+                <p class="text-slate-500 text-sm">Modernizing legacy systems with AI-driven workflows and cloud infrastructure.</p>
+            </div>
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-2xl transition group text-left">
+                <div class="bg-sky-100 text-sky-600 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-sky-600 group-hover:text-white transition">
+                    <i class="fa-solid fa-shield-halved text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Risk Advisory</h3>
+                <p class="text-slate-500 text-sm">Comprehensive auditing to protect against market volatility and regulatory shifts.</p>
+            </div>
+        </div>
+
+        <div class="mt-32 max-w-5xl mx-auto bg-slate-900 text-white rounded-[3rem] p-16 text-left">
+            <h3 class="text-3xl font-bold mb-12 border-b border-slate-800 pb-6">Our Methodology</h3>
+            <div class="grid md:grid-cols-3 gap-12">
+                <div>
+                    <h4 class="text-sky-400 font-bold mb-4">01. Discovery</h4>
+                    <p class="text-slate-400 text-sm">Exhaustive data collection and stakeholder interviews to define core challenges.</p>
+                </div>
+                <div>
+                    <h4 class="text-sky-400 font-bold mb-4">02. Blueprint</h4>
+                    <p class="text-slate-400 text-sm">Custom strategic roadmap developed by our senior industry specialists.</p>
+                </div>
+                <div>
+                    <h4 class="text-sky-400 font-bold mb-4">03. Execution</h4>
+                    <p class="text-slate-400 text-sm">Hands-on implementation and continuous optimization for measurable ROI.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cases" class="page py-32 px-12 text-center">
+        <h2 class="text-6xl font-bold mb-20">Recent Success</h2>
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" class="rounded-3xl shadow-xl h-64 w-full object-cover">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500&q=80" class="rounded-3xl shadow-xl h-64 w-full object-cover">
+            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=500&q=80" class="rounded-3xl shadow-xl h-64 w-full object-cover">
+        </div>
+    </div>
+
+    <div id="about" class="page py-32 px-12">
+        <div class="max-w-4xl mx-auto text-center mb-24">
+            <h2 class="text-6xl font-black mb-8">Redefining Strategy.</h2>
+            <p class="text-2xl text-slate-500 leading-relaxed font-light">Apex Strategy Group began in 2010 with a singular mission: to provide the radical transparency and mathematical precision that traditional firms lack.</p>
+        </div>
+
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" class="rounded-[3rem] shadow-2xl">
+            <div class="space-y-8">
+                <h3 class="text-4xl font-bold">Our Global Heritage</h3>
+                <p class="text-slate-600 leading-relaxed">Headquartered in Manhattan with key hubs in London, Singapore, and Dubai, our 400+ consultants bring a diversity of thought that is our greatest competitive advantage. We don't just speak the language of business; we speak the language of the markets.</p>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-circle-check text-sky-600 mt-1"></i>
+                        <p class="font-bold">Unbiased data-first philosophy.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-circle-check text-sky-600 mt-1"></i>
+                        <p class="font-bold">Exclusive focus on Fortune 1000 and high-growth startups.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="fa-solid fa-circle-check text-sky-600 mt-1"></i>
+                        <p class="font-bold">Direct access to senior partners for every engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="page py-32 px-12 text-center">
+        <div class="max-w-3xl mx-auto bg-white p-20 rounded-[3rem] shadow-2xl border border-slate-100">
+            <h2 class="text-4xl font-bold mb-10">Start the Conversation</h2>
+            <form onsubmit="event.preventDefault(); alert('Message Sent!');" class="space-y-6">
+                <input type="text" placeholder="Your Name" class="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-sky-500" required>
+                <input type="email" placeholder="Business Email" class="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-sky-500" required>
+                <textarea placeholder="How can we help?" class="w-full p-5 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-sky-500 h-32" required></textarea>
+                <button class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl uppercase tracking-widest hover:bg-sky-600 transition">Send Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-slate-950 text-slate-400 py-24 px-12 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div>
+                <h4 class="text-white text-2xl font-black mb-6">APEX<span class="text-sky-500">STRATEGY</span></h4>
+                <p class="text-sm leading-relaxed">Building the architectural foundations for the global leaders of tomorrow.</p>
+            </div>
+            <div>
+                <h5 class="text-white font-bold uppercase text-xs tracking-widest mb-6">Navigation</h5>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-white transition">Home</a></li>
+                    <li><a href="javascript:void(0)" onclick="showPage('services')" class="hover:text-white transition">Expertise</a></li>
+                    <li><a href="javascript:void(0)" onclick="showPage('contact')" class="hover:text-white transition">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-white font-bold uppercase text-xs tracking-widest mb-6">Office Hubs</h5>
+                <p class="text-sm mb-2">Manhattan, NY</p>
+                <p class="text-sm mb-2">Canary Wharf, LDN</p>
+                <p class="text-sm">Marina Bay, SGP</p>
+            </div>
+            <div>
+                <h5 class="text-white font-bold uppercase text-xs tracking-widest mb-6">Social Connect</h5>
+                <div class="flex gap-6 text-xl">
+                    <a href="https://linkedin.com" target="_blank" class="hover:text-white"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://twitter.com" target="_blank" class="hover:text-white"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://facebook.com" target="_blank" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-20 pt-10 border-t border-slate-900 text-center text-[10px] tracking-[0.3em] font-bold">
+            &copy; 2026 APEX STRATEGY GROUP LLC. ALL RIGHTS RESERVED.
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function toggleChat() {
+            const chat = document.getElementById("chat-window");
+            chat.style.display = (chat.style.display === "block") ? "none" : "block";
+        }
+        function sendMessage() {
+            const input = document.getElementById("chat-input");
+            const content = document.getElementById("chat-content");
+            if(input.value.trim() !== "") {
+                const userMsg = document.createElement("p");
+                userMsg.className = "bg-sky-100 p-3 rounded-lg mb-4 text-right ml-10 shadow-sm";
+                userMsg.innerText = input.value;
+                content.appendChild(userMsg);
+                setTimeout(() => {
+                    const botMsg = document.createElement("p");
+                    botMsg.className = "bg-white border p-3 rounded-lg mb-4 shadow-sm mr-10";
+                    botMsg.innerText = "Thanks for your message! A partner will be with you shortly, or you can email us at strategy@apex.com.";
+                    content.appendChild(botMsg);
+                    content.scrollTop = content.scrollHeight;
+                }, 800);
+                input.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
